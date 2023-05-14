@@ -56,7 +56,7 @@ pipeline{
                 script{
                 sh '''
                 echo 'running the flask application'
-                ssh ec2-user@${hostname} "gunicorn app:app -b 0.0.0.0:80 -D"
+                ssh ec2-user@${hostname} "sudo gunicorn app:app -b 0.0.0.0:80 -D"
                 echo 'completed successfully'
                 '''
                 }
