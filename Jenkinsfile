@@ -41,7 +41,7 @@ pipeline{
                 script{
                 sh '''
                 echo 'Checking if dependencies are installed...'
-                ssh ec2-user@${hostname} "python3 -c \"import flask\""
+                ssh ec2-user@${hostname} 'sudo python3 -c \"import flask\"'
                 if [ $? -eq 0 ]; then
                     echo 'Dependencies already installed. Skipping installation stage...'
                 else
