@@ -1,5 +1,9 @@
 pipeline{
-    agent any
+    agent {
+        node {
+            label 'python-flask'
+        }
+    }
     parameters{
         string(name: 'bucketname', defaultValue: 'bucket name', description: 'bucket name')
         string(name: 'hostname', defaultValue: 'host name', description: 'host name')
