@@ -27,8 +27,8 @@ pipeline{
                 echo 'Deploying Flask application...'
                 ssh ec2-user@${hostname} "cd /home/ec2-user/ && sudo rm -rf *"
                 aws s3 cp s3://${bucketname}/FlaskApp-${BUILD_NUMBER}.zip .
-                scp Flaskapp-${BUILD_NUMBER}.zip ec2-user@${hostname}:/home/ec2-user/
-                ssh ec2-user@${hostname} "cd /home/ec2-user/ && unzip Flaskapp-${BUILD_NUMBER}.zip"
+                scp FlaskApp-${BUILD_NUMBER}.zip ec2-user@${hostname}:/home/ec2-user/
+                ssh ec2-user@${hostname} "cd /home/ec2-user/ && unzip FlaskApp-${BUILD_NUMBER}.zip"
                 ssh ec2-user@${hostname} "cd /home/ec2-user/ && sudo rm -rf *.zip"
                 rm -fr *.zip
                 echo 'Flask application deployed successfully!'
