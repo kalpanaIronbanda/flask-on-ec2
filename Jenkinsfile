@@ -46,7 +46,8 @@ pipeline{
                     echo 'Dependencies already installed. Skipping installation stage...'
                 else
                     echo 'Dependencies not installed. Proceeding with installation...'
-                    '''
+                    fi
+                '''
                 }
             }
         }
