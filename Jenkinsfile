@@ -36,21 +36,14 @@ pipeline{
                 }
             }
         }
-        stage('Check Dependencies and install') {
-            steps {
+        stage('Installation'){
+            steps{
                 script{
                 sh '''
-                echo 'Checking if dependencies are installed...'
-                ssh ec2-user@${hostname} 'sudo python3 -c \"import flask\"'
-                if [ $? -eq 0 ]; then
-                    echo 'Dependencies already installed'
-                else
-                    echo 'Dependencies not installed. Proceeding with installation...'
-                    echo 'installing the dependencies...'
-                    ssh ec2-user@${hostname} "sh dependencies.sh"
-                    echo 'installed successfully'
-                    fi
-                '''
+                echo 'installing the dependencies...'
+                ssh ec2-user@${hostname} "sh dependencies.sh"
+                echo 'installed successfully'
+                    '''
                 }
             }
         }
