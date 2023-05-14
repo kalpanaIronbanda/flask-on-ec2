@@ -1,7 +1,6 @@
 pipeline{
     agent any
     parameters{
-        string(name: 'BUILD_NUMBER', defaultValue: '3', description: 'Build Number')
         string(name: 'bucketname', defaultValue: 'bucket name', description: 'bucket name')
         string(name: 'hostname', defaultValue: 'host name', description: 'host name')
     }
@@ -34,6 +33,20 @@ pipeline{
                 rm -fr *.zip
                 echo 'Flask application deployed successfully!'
                 '''
+                }
+            }
+        }
+        stage('Check Dependencies') {
+            steps {
+                script{
+                sh '''
+                echo 'Checking if dependencies are installed...'
+                ssh ec2-user@${hostname} "python3 -c \"import flask\""
+                if [ $? -eq 0 ]; then
+                    echo 'Dependencies already installed. Skipping installation stage...'
+                else
+                    echo 'Dependencies not installed. Proceeding with installation...'
+                    '''
                 }
             }
         }
