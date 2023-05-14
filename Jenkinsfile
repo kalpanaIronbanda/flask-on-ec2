@@ -38,40 +38,40 @@ pipeline{
         }
         stage('Check Dependencies') {
             steps {
-                script {
-                    sh '''
-                        echo 'Checking if dependencies are installed...'
-                        ssh ec2-user@${hostname} 'sudo python3 -c \"import flask\"' || exit 1
-                        echo 'Dependencies already installed. Skipping installation stage...'
-                    '''
-                }
-                post {
-                    failure {
-                        stage('Installation') {
-                            steps {
-                                script {
-                                    sh '''
-                                        echo 'Installing dependencies...'
-                                        ssh ec2-user@${hostname} "sh dependencies.sh"
-                                        echo 'Dependencies installed successfully!'
-                                    '''
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        stage('Run'){
-            steps{
                 script{
                 sh '''
-                echo 'running the flask application'
-                ssh ec2-user@${hostname} "sudo nohup python3 app.py &"
-                echo 'completed successfully'
+                echo 'Checking if dependencies are installed...'
+                ssh ec2-user@${hostname} 'sudo python3 -c \"import flask\"'
+                if [ $? -eq 0 ]; then
+                    echo 'Dependencies already installed. Skipping installation stage...'
+                else
+                    echo 'Dependencies not installed. Proceeding with installation...'
+                    fi
                 '''
                 }
             }
         }
+        stage('Installation'){
+            steps{
+                script{
+                sh '''
+                echo 'installing the dependencies...'
+                ssh ec2-user@${hostname} "sh dependencies.sh"
+                echo 'installed successfully'
+                    '''
+                }
+            }
+        }
+    stage('Run'){
+        steps{
+            script{
+            sh '''
+            echo 'running the flask application'
+            ssh ec2-user@${hostname} "sudo nohup python3 app.py &"
+            echo 'completed successfully'
+            '''
+            }
+        }
+    }
     }
 }
